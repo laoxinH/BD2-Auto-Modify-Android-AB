@@ -32,4 +32,4 @@ python main.py
 如果需要添加新的资源文件，只需在source_data_list.py中新增即可，如果replace文件夹中文件有变化，在定时运行时同样会生成新的AB资源文件
 
 ###### 提示
-如果所需问金价没有建立，可用运行一次脚本，会自动按照source_data_list.py中的配置生成对应replace目录、sourcedata目录以及下载对应__data资源文件
+如果所需文件夹没有建立，可运行一次脚本，会自动按照source_data_list.py中的配置生成对应replace目录、sourcedata目录以及下载对应__data资源文件
