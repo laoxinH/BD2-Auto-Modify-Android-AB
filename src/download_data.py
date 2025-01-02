@@ -10,8 +10,13 @@ import tqdm
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 # 获取脚本所在目录的父目录（项目根目录）
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
+# 配置代理
+proxies = {
+    'http': 'http://127.0.0.1:19668',
+    'https': 'http://127.0.0.1:19668',
+}
+session = requests.Session()
+session.proxies.update(proxies)
 def get_bd2_cdn(data_name):
     content = {
         "1": 2,
@@ -28,7 +33,7 @@ def get_bd2_cdn(data_name):
         "5": {"type": "bytes", "name": ""},
         "6": {"type": "int", "name": ""},
     }
-    res = requests.post("https://mt.bd2.pmang.cloud/MaintenanceInfo",
+    res = session.post("https://mt.bd2.pmang.cloud/MaintenanceInfo",
                         data=base64.b64encode(bbpb.encode_message(content, content_d)))
     data = bbpb.decode_message(base64.b64decode(res.json()["data"]))[0]["1"]
     version = str(data["3"])[2:-1]
@@ -41,7 +46,7 @@ def get_bd2_cdn(data_name):
 
 def download_data(data_name):
     url, name = get_bd2_cdn(data_name)
-    res = requests.get(url, stream=True)
+    res = session.get(url, stream=True)
     total_size = int(res.headers.get('content-length', 0))
     output_path = os.path.join(project_root, "sourcedata", data_name, "__data")
 
@@ -66,7 +71,7 @@ def download_data(data_name):
 
 def get_data_size(data_name):
     url, name = get_bd2_cdn(data_name)
-    res = requests.head(url)
+    res = session.head(url)
     logging.info(f"Fetching {data_name} size from {url} is {res.headers.get('Content-Length', 0)}")
     return int(res.headers.get('Content-Length', 0))
 

@@ -5,11 +5,19 @@ pip install -r requirements.txt
 ```
 ###### 2.修改**source_data_list.py**配置文件
 这个文件中包含需要mod的资源文件列表，DB2中经常改动的_data已默认已写入（其他需要mod资源请自行对照资源表填入），格式如下:
+
+**data_name：__data文件对应的服务器资源名称**
+
+**replace_data：用于替换的unity资源存放位置，相对于项目根目录/replace目录的路径,默认为data_name**
+
+**target_data：目标文件存放位置，相对于项目根目录/tragetdata目录的路径,默认为data_name**
+
 ```python
 data = [
     {
         "data_name": "common-skeleton-data_assets_all.bundle",  # __data对应的资源名称
-        "replace_data": ""  # 替换资源存放的目录，相对于项目根目录/replace目录的路径,不填默认为: 项目根目录{data_name}
+        "replace_data": "",  # 替换资源存放位置，相对于项目根目录/replace目录的路径,不填默认为: 项目根目录/replace/{data_name}
+        "target_data": "99788f5cc062190a31abbf5e00f3a152"  # 目标文件存放位置，相对于项目根目录/tragetdata目录的路径,不填默认为: 项目根目录/tragetdata/{data_name}
     }
 ]
 ```
@@ -22,12 +30,13 @@ data = [
 
 ###### 4.运行
 ```shell
+cd /src
 python main.py
 ```
 
 ###### 5.生成的AB资源文件在targetdata目录下
 ###### 6.定时运行脚本
-定时运行脚本时需要自行实现定时方式，当检测到游戏服务器资源文件更新时会自动下载资源文件并替换，生成新的MOD文件，新的文件按照生成时间命名
+定时运行脚本时需要自行实现定时方式，当检测到游戏服务器data文件更新时会自动下载资源文件并执行替换，新的文件按照生成时间命名
 
 如果需要添加新的资源文件，只需在source_data_list.py中新增即可，如果replace文件夹中文件有变化，在定时运行时同样会生成新的AB资源文件
 

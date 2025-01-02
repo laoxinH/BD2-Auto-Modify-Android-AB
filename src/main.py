@@ -44,7 +44,11 @@ def run():
         logging.info(f"Data size: {data_size}")
         data_dir = os.path.join(ab_data_dir, itme["data_name"])
         target_data = os.path.join(target_data_dir, time_str, itme["data_name"], "__data")
-        if not os.path.exists(os.path.join(data_dir, "__data")) or os.path.getsize(os.path.join(data_dir, "__data")) != data_size:
+        if itme["target_data"] != "":
+            target_data = os.path.join(target_data_dir, time_str, itme["target_data"], "__data")
+
+        if not os.path.exists(os.path.join(data_dir, "__data")) or os.path.getsize(
+                os.path.join(data_dir, "__data")) != data_size:
             logging.info(
                 f"Data file {itme['data_name']} not found or need update, downloading...")
             download_data(itme["data_name"])
